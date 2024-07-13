@@ -13,9 +13,9 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13
+        image: postgres:15
         ports:
-          - 5432:5432
+          - 27071:27071
         env:
           POSTGRES_DB: railway
           POSTGRES_USER: postgres
@@ -32,7 +32,7 @@ jobs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.0'
+        php-version: '8.3'
 
     - name: Install Composer Dependencies
       run: composer install --no-progress --prefer-dist --optimize-autoloader
@@ -45,7 +45,7 @@ jobs:
         echo "APP_ENV=testing" >> .env
         echo "DB_CONNECTION=pgsql" >> .env
         echo "DB_HOST=127.0.0.1" >> .env
-        echo "DB_PORT=5432" >> .env
+        echo "DB_PORT=27071" >> .env
         echo "DB_DATABASE=railway" >> .env
         echo "DB_USERNAME=postgres" >> .env
         echo "DB_PASSWORD=xMvxNJYXtXeypDYjKwGxaxSfaiioyEpO" >> .env
@@ -70,7 +70,7 @@ jobs:
 
     - name: Wait for PostgreSQL
       run: |
-        until pg_isready -h 127.0.0.1 -p 5432; do
+        until pg_isready -h 127.0.0.1 -p 27071; do
           echo "Waiting for PostgreSQL to be ready..."
           sleep 1
         done
@@ -83,7 +83,7 @@ jobs:
       env:
         DB_CONNECTION: pgsql
         DB_HOST: 127.0.0.1
-        DB_PORT: 5432
+        DB_PORT: 27071
         DB_DATABASE: railway
         DB_USERNAME: postgres
         DB_PASSWORD: xMvxNJYXtXeypDYjKwGxaxSfaiioyEpO
